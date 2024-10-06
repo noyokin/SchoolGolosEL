@@ -2,6 +2,7 @@
 
 ВНИМАНИЕ! Этот проект не рекомендуется хостить на серверах. Остаётся открыт вопрос про безопасность!!!
 
+2_ВНИМАНИЕ! Этот проект был написан с помощью ИИ. Так что "Чистота кода", не может быть идеальная. Но свою работоспособность выполняет на 99%:)
 <!--Блок информации о репозитории в бейджах-->
 ![GitHub top language](https://img.shields.io/github/languages/top/noyokin/SchoolGolosEL)
 ![GitHub](https://img.shields.io/github/license/noyokin/SchoolGolosEL)
