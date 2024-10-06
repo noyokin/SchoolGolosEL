@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить студента (защищено паролем)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container, .password-prompt {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            padding: 20px;
+        }
+        .container {
+            display: none; /* Скрываем контейнер до проверки пароля */
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+        }
+        input[type="text"], input[type="password"] {
+            margin-bottom: 15px;
+            width: 95%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Форма ввода пароля -->
+    <div class="password-prompt">
+        <h1>Введите пароль</h1>
+        <form id="passwordForm">
+            <label for="password">Пароль:</label><br>
+            <input type="password" id="password" name="password" required><br>
+            <button type="submit">Войти</button>
+        </form>
+    </div>
+
+    <!-- Форма добавления студента -->
+    <div class="container">
+        <h1>Добавить студента</h1>
+        <form id="studentForm">
+            <label for="studentId">Номер студенческого билета:</label><br>
+            <input type="text" id="studentId" name="studentId" required><br>
+
+            <label for="classCode">Код класса:</label><br>
+            <input type="text" id="classCode" name="classCode" required><br>
+
+            <label for="name">ФИО студента:</label><br>
+            <input type="text" id="name" name="name" required><br>
+
+            <label for="class">Класс:</label><br>
+            <input type="text" id="class" name="class" required><br>
+
+            <button type="submit">Добавить студента</button>
+        </form>
+    </div>
+
+    <script>
+        // Обработчик формы ввода пароля
+        document.getElementById('passwordForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const enteredPassword = document.getElementById('password').value;
+
+            // Отправляем пароль на сервер для проверки
+            let formData = new FormData();
+            formData.append('password', enteredPassword);
+
+            fetch('check_password.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Если пароль верен, показываем форму для добавления студента
+                    document.querySelector('.password-prompt').style.display = 'none';
+                    document.querySelector('.container').style.display = 'block';
+                } else {
+                    alert('Неправильный пароль!');
+                }
+            });
+        });
+
+        // Обработчик формы добавления студента
+        document.getElementById('studentForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+
+            fetch('create_student.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Студент добавлен успешно!');
+                    document.getElementById('studentForm').reset();
+                } else {
+                    alert('Ошибка: ' + data.message);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
